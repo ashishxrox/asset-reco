@@ -25,7 +25,7 @@ def main():
     st.markdown("Describe your brand and campaign, and we’ll recommend the best advertising asset.")
 
     # --- Location Dropdown ---
-    locations = ["Kroot Memorial High School", "Tech Park", "City Center", "Downtown Mall", "Aparna Westside"]  # Example locations
+    locations = ["Kroot Memorial High School", "Aparna Westside", "Hydra University", "Vazhraa Prathik"]  # Example locations
     location = st.selectbox("Select a Location", locations)
 
     # --- User Input (Single Combined Message) ---

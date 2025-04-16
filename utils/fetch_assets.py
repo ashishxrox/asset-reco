@@ -1,7 +1,7 @@
 # utils/fetch_assets.py
 import requests
 
-def fetch_assets_for_location(location_name: str) -> list:
+def fetch_assets_for_location(location_id) -> list:
     """
     Simulates fetching asset data from an external API for a given location.
     Replace this with actual API calls later using requests.
@@ -315,10 +315,9 @@ def fetch_assets_for_location(location_name: str) -> list:
     #     ]
     # }
 
-    url = "https://devapi.monetez.com/api/univerze/v1/locationforMediaPlanner"
+    url = "https://devapi.monetez.com/api/univerze/v1/assetsforMediaPlanner"
     payload = {
-        "name": location_name,
-        "client": "univerze"
+        "id": location_id,
     }
 
     try:
@@ -331,17 +330,16 @@ def fetch_assets_for_location(location_name: str) -> list:
 
         assets_info = []
 
-        for location in data["data"]:
-            for asset in location.get("assets", []):
-                assets_info.append({
-                    "asset_name": asset.get("asset_name"),
-                    "company_name": asset.get("company_name"),
-                    "rate": asset.get("rate"),
-                    "frequency": asset.get("frequency"),
-                    "details": asset.get("details"),
-                    "reach": asset.get("reach"),
-                    # "available_slots": asset.get("slots_per_asset", 0) * asset.get("quantity", 1),
-                })
+        for asset in data["data"]:
+            assets_info.append({
+                "asset_name": asset.get("asset_name"),
+                "company_name": asset.get("company_name"),
+                "rate": asset.get("rate"),
+                "frequency": asset.get("frequency"),
+                "details": asset.get("details"),
+                "reach": asset.get("reach"),
+                # "available_slots": asset.get("slots_per_asset", 0) * asset.get("quantity", 1),
+            })
 
         return assets_info
 
@@ -350,6 +348,8 @@ def fetch_assets_for_location(location_name: str) -> list:
         return []
 
 
+
+print(fetch_assets_for_location(228))
 
 # Name
 # Rate

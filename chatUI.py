@@ -4,6 +4,7 @@ from openai import OpenAI
 from dotenv import load_dotenv
 from utils.fetch_assets import fetch_assets_for_location
 from utils.prompts import get_asset_chat_recommendation_prompt
+from utils.fetch_locations import fetch_locations_from_api 
 
 # Load environment variables
 load_dotenv()
@@ -24,9 +25,24 @@ def main():
     st.title("📍 Ad Asset Recommender")
     st.markdown("Describe your brand and campaign, and we’ll recommend the best advertising asset.")
 
-    # --- Location Dropdown ---
-    locations = ["Kroot Memorial High School", "Aparna Westside", "Hydra University", "Vazhraa Prathik"]  # Example locations
-    location = st.selectbox("Select a Location", locations)
+    # --- Location Search + Dropdown ---
+    st.subheader("📍 Choose a Location")
+
+    search_query = st.text_input("Search for a location")
+
+    # Fetch filtered locations from API
+    locations = fetch_locations_from_api(search_query)
+    if not locations:
+        st.warning("No locations found for your search.")
+        st.stop()
+
+    # Map display names to location objects
+    location_name_map = {loc["company_name"]: loc for loc in locations if "company_name" in loc}
+    selected_name = st.selectbox("Select from matching locations", list(location_name_map.keys()))
+    selected_location = location_name_map[selected_name]
+    st.markdown(selected_location['location_id'])
+
+    # location = st.selectbox("Select a Location", locations)
 
     # --- User Input (Single Combined Message) ---
     user_input = st.text_area(
@@ -41,12 +57,12 @@ def main():
             st.warning("Please enter your campaign details first.")
             return
 
-        if location not in locations:
-            st.warning("Please select a valid location.")
-            return
+        # if location not in locations:
+        #     st.warning("Please select a valid location.")
+        #     return
 
         # --- Fetch Assets ---
-        assets = fetch_assets_for_location(location)
+        assets = fetch_assets_for_location(selected_location['location_id'])
         if not assets:
             st.error(f"No assets found for {location}.")
             return

@@ -1,0 +1,7 @@
+flask
+openai
+python-dotenv
+requests
+tqdm
+markdown
+streamlit  

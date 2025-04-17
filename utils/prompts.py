@@ -39,44 +39,42 @@ def get_asset_chat_recommendation_prompt(query, assets):
     asset_list_text = json.dumps(assets, indent=2)
 
     prompt = f"""
-            You are an expert media planner for advertising campaigns.
+You are an expert media planner for advertising campaigns.
 
-            Below is a request from a user looking for campaign asset recommendations. Please analyze their need, and based on that, recommend the most suitable advertising asset from the provided list. Return top 3 best asset.
+User Request:
+\"\"\"
+{query}
+\"\"\"
 
-            User Request:
-            \"\"\"
-            {query}
-            \"\"\"
+Available Assets:
+{asset_list_text}
 
-            Available Assets:
-            {assets}
+Instructions:
+- Pick the **3 most relevant assets** based on the user’s campaign goal, target audience, budget, and brand type.
+- Always prioritize **strategic intent**. Use these intent rules:
 
-            Instructions:
-            - Pick the most relevant asset considering their campaign goal, budget, and brand description.
-            -Greet the user for example say here's what I got for you or something to sound a bit more human
-            - Clearly explain why the selected asset is a good fit and how it can attract their target audience more in 3-4 sentence paragraph .
-            Return in this format:
+    - Want **mass reach**? → Choose **screens**, **LED boards**, **message rollouts**.
+    - Want **active engagement**? → Go for **stalls**, **clubhouse exhibits**, or **live booths**.
+    - Want **silent sampling**? → Opt for **D2D delivery**, **pamphlets**, **giveaways**.
+    - Want **brand recall**? → Choose **posters**, **standees**, **frequent visual placements**.
 
+- Greet the user first. For example: “Here’s what I found for you!” — sound helpful and human.
+- For each asset, clearly explain why it suits the brand, intent and target audience in a short paragraph (3–4 sentences).
+- Be strategic — consider **cost-effectiveness**, **reach**, and **impact**.
 
-            Recomended Asset [Rank]: [Asset Name]  
-            Asset Type: [asset_type]
-            Rate: [Price]/[Frequency]
-            Why: [1-2 sentence reasoning]
+Return in this format:
 
+Recomended Asset [Rank]: [Asset Name]  
+Asset Type: [asset_type]  
+Rate: [₹x/unit]  
+Why: [3–4 sentence explanation]
 
-            Then, based on the selected top 3 assets and with the specified budget, generate a detailed **asset allocation table** with the following columns:
-            - Asset
-            - Cost per Unit
-            - Allocation
-            - Quantity Purchased
-            - Duration Covered
+Then, generate a **detailed asset allocation table** based on the selected assets and budget:
 
-            Format the table exactly like this example:
-
-            | Asset        | Cost per Unit | Allocation | Quantity Purchased | Duration Covered |
-            |--------------|----------------|-------------|---------------------|--------------------|
-            | asset name   | ₹x/unit       | ₹xxxxx     | x units            | ~x years           |
-            | ...          | ...           | ...         | ...                 | ...                |
-            | Total Spent  |                | budget  |                     |                    |
-    """
+| Asset        | Cost per Unit | Allocation | Quantity Purchased | Duration Covered |
+|--------------|----------------|-------------|---------------------|--------------------|
+| asset name   | ₹x/unit       | ₹xxxxx     | x units            | ~x months          |
+| ...          | ...           | ...         | ...                 | ...                |
+| Total Spent  |                | ₹xxxxxx    |                     |                    |
+"""
     return prompt

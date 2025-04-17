@@ -53,18 +53,30 @@ def get_asset_chat_recommendation_prompt(query, assets):
 
             Instructions:
             - Pick the most relevant asset considering their campaign goal, budget, and brand description.
-            - Clearly explain why the selected asset is a good fit in 3-4 sentence paragraph.
+            -Greet the user for example say here's what I got for you or something to sound a bit more human
+            - Clearly explain why the selected asset is a good fit and how it can attract their target audience more in 3-4 sentence paragraph .
             Return in this format:
+
 
             Recomended Asset [Rank]: [Asset Name]  
             Asset Type: [asset_type]
             Rate: [Price]/[Frequency]
             Why: [1-2 sentence reasoning]
-            Summary table (in tabular format should include columns for rank, name, type, rate, reason(1 short pointer))
-            """
+
+
+            Then, based on the selected top 3 assets and with the specified budget, generate a detailed **asset allocation table** with the following columns:
+            - Asset
+            - Cost per Unit
+            - Allocation
+            - Quantity Purchased
+            - Duration Covered
+
+            Format the table exactly like this example:
+
+            | Asset        | Cost per Unit | Allocation | Quantity Purchased | Duration Covered |
+            |--------------|----------------|-------------|---------------------|--------------------|
+            | asset name   | ₹x/unit       | ₹xxxxx     | x units            | ~x years           |
+            | ...          | ...           | ...         | ...                 | ...                |
+            | Total Spent  |                | budget  |                     |                    |
+    """
     return prompt
-
-
-
-
-

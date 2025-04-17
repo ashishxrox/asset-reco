@@ -15,7 +15,7 @@ MAX_CHARS = 1000
 def format_assets_list(assets):
     lines = []
     for asset in assets:
-        line = f"- {asset['asset_name']} | ₹{asset['rate']} | {asset['company_name']}  | {asset.get('frequency', 'N/A')} | {asset.get('reach', 'N/A')} | {asset.get('asset_type', 'N/A')}"
+        line = f"- {asset['asset_name']} | ₹{asset['rate']}| {asset.get('details', 'N/A')} | {asset['company_name']}  | {asset.get('frequency', 'N/A')} | {asset.get('reach', 'N/A')} | {asset.get('asset_type', 'N/A')}"
         lines.append(line)
     return "\n".join(lines)
 
@@ -32,6 +32,9 @@ if "selected_location" not in st.session_state:
 
 if "formatted_assets" not in st.session_state:
     st.session_state.formatted_assets = None
+
+if "user_profile" not in st.session_state:
+    st.session_state.user_profile = {}
 
 # Sidebar reset
 if st.sidebar.button("🧹 Start New Chat"):
@@ -73,14 +76,11 @@ else:
     user_input = st.chat_input("Describe your campaign or ask a follow-up")
 
     if user_input:
-        # Add user message
         st.session_state.messages.append({"role": "user", "content": user_input})
         with st.chat_message("user"):
             st.markdown(user_input)
 
-        # Build chat history for OpenAI
-        # Inject system context into the user's first message
-        # Inject asset list every time as context
+        # Build conversation context
         asset_list_header = (
             "ASSET LIST:\n"
             f"{formatted_assets}\n\n"
@@ -88,32 +88,26 @@ else:
 
         system_instruction = (
             "You are an expert media planner helping brands choose advertising assets.\n"
-            "Only suggest assets from the provided ASSET LIST. Do not make up new ones or mention digital ad platforms.\n"
-            "Be specific, insightful, and helpful based on the budget and brand intent described.\n"
-            "Keep responses short, concise, and to the point. Avoid unnecessary elaboration.\n"
+            "You're curious and passionate about understanding the brand, their goals, and target audience.\n"
+            "Ask 1-2 friendly follow-up questions to understand their budget, campaign, product, or audience better—especially if the query is vague.\n"
+            "Make sure you keep asking questions till you dont have knowedge about what their brand is about, what their budget is, what are they trying to sell and who they are trying to sell.\n"
+            "First understand what the brand is like what they sell and who they sell then ask questions about the campign and budget.\n"
+            "Make it feel like you're genuinely interested in their brand and want to help them succeed.\n"
+            "Only suggest assets from the provided ASSET LIST.\n"
+            "Once you're confident you have enough details, include the keyword <<RECOMMEND>> in your response.\n"
+            "Keep responses clear, friendly, and strategic—like a helpful teammate.\n"
         )
 
-        messages = []
 
-        for i, msg in enumerate(st.session_state.messages):
-            # First message: combine system + asset list + user query
-            if i == 0:
-                combined = system_instruction + "\n" + asset_list_header + msg["content"]
-                messages.append({"role": "user", "content": combined})
+        # Prepare messages
+        messages = [{"role": "user", "content": system_instruction}]
+
+        for msg in st.session_state.messages:
+            if msg["role"] == "user":
+                content = asset_list_header + msg["content"]
+                messages.append({"role": "user", "content": content})
             else:
-                # In follow-ups: prepend asset list silently
-                if msg["role"] == "user":
-                    content = asset_list_header + msg["content"]
-                    messages.append({"role": "user", "content": content})
-                else:
-                    messages.append(msg)
-
-
-
-        # First turn only: inject full asset prompt
-        if len(st.session_state.messages) == 1:
-            custom_prompt = get_asset_chat_recommendation_prompt(user_input, formatted_assets)
-            messages[-1]["content"] = custom_prompt
+                messages.append(msg)
 
         try:
             response = client.chat.completions.create(
@@ -122,7 +116,20 @@ else:
             )
             assistant_reply = response.choices[0].message.content
 
-            # Show assistant reply
+            # If keyword found, switch to recommendation mode
+            if "<<RECOMMEND>>" in assistant_reply:
+                last_user_input = st.session_state.messages[-1]["content"]
+                rec_prompt = get_asset_chat_recommendation_prompt(last_user_input, formatted_assets)
+
+                try:
+                    rec_response = client.chat.completions.create(
+                        model="o1-mini-2024-09-12",
+                        messages=[{"role": "user", "content": rec_prompt}]
+                    )
+                    assistant_reply = rec_response.choices[0].message.content
+                except Exception as inner_e:
+                    st.error(f"Error while getting recommendations: {inner_e}")
+
             st.session_state.messages.append({"role": "assistant", "content": assistant_reply})
             with st.chat_message("assistant"):
                 st.markdown(assistant_reply)

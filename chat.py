@@ -12,7 +12,7 @@ client = OpenAI()  # Uses your OPENAI_API_KEY from .env
 def format_assets_list(assets):
     lines = []
     for asset in assets:
-        line = f"- {asset['asset_name']} | ₹{asset['rate']} | {asset['company_name']} | {asset['details']} | {asset.get('frequency', 'N/A')} | {asset.get('reach', 'N/A')}"
+        line = f"- {asset['asset_name']} | ₹{asset['rate']} | {asset['company_name']} | {asset['details']} | {asset.get('frequency', 'N/A')} | {asset.get('reach', 'N/A')} | {asset.get('asset_type')}"
         lines.append(line)
     return "\n".join(lines)
 

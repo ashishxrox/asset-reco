@@ -53,12 +53,14 @@ def get_asset_chat_recommendation_prompt(query, assets):
 
             Instructions:
             - Pick the most relevant asset considering their campaign goal, budget, and brand description.
-            - Clearly explain why the selected asset is a good fit in 1 short points.
+            - Clearly explain why the selected asset is a good fit in 3-4 sentence paragraph.
             Return in this format:
 
             Recomended Asset [Rank]: [Asset Name]  
+            Asset Type: [asset_type]
             Rate: [Price]/[Frequency]
             Why: [1-2 sentence reasoning]
+            Summary table (in tabular format should include columns for rank, name, type, rate, reason(1 short pointer))
             """
     return prompt
 

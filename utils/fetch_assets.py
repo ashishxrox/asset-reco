@@ -350,7 +350,7 @@ def fetch_assets_for_location(location_id) -> list:
 
 
 
-print(fetch_assets_for_location(228))
+# print(fetch_assets_for_location(228))
 
 # Name
 # Rate

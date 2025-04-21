@@ -66,7 +66,7 @@ Return in this format:
 
 Recomended Asset [Rank]: [Asset Name]  
 Asset Type: [asset_type]  
-Rate: [₹x/unit]  
+Rate: [₹x/frequency]  
 Why: [3–4 sentence explanation]
 
 Then, generate a **detailed asset allocation table** based on the selected assets and budget:

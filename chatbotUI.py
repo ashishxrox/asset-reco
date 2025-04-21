@@ -15,7 +15,7 @@ MAX_CHARS = 1000
 def format_assets_list(assets):
     lines = []
     for asset in assets:
-        line = f"- {asset['asset_name']} | ₹{asset['rate']}| {asset.get('details', 'N/A')} | {asset['company_name']}  | {asset.get('frequency', 'N/A')} | {asset.get('reach', 'N/A')} | {asset.get('asset_type', 'N/A')}"
+        line = f"- {asset['asset_name']} | ₹{asset['rate']}| {asset.get('details', 'N/A')} | {asset['company_name']}  | Frequency : {asset.get('frequency', 'N/A')} | Reach : {asset.get('reach', 'N/A')} | {asset.get('asset_type', 'N/A')}"
         lines.append(line)
     return "\n".join(lines)
 

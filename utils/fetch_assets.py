@@ -338,7 +338,8 @@ def fetch_assets_for_location(location_id) -> list:
                 "frequency": asset.get("frequency"),
                 "details": asset.get("details"),
                 "reach": asset.get("reach"),
-                "asset_type": asset.get("asset_type_name")
+                "asset_type": asset.get("asset_type_name"),
+                "quantity" : asset.get("quantity")
                 # "available_slots": asset.get("slots_per_asset", 0) * asset.get("quantity", 1),
             })
 

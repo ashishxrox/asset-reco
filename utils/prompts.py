@@ -64,30 +64,38 @@ Instructions:
 - Be strategic — consider **cost-effectiveness**, **reach**, and **impact**.
 - In the asset allocation table:
 - For reach make sure you use the values inside the reach fields only and not get confused with anything that is there in the asset detail or description
-  - For the "Reach/Impressions" column, **simply combine** the `reach` and `frequency` fields **from the asset list**, in the format: `[reach]/[frequency]`.
-  - Do not interpret, estimate, calculate, or rephrase. Just use the raw values from the `reach` and `frequency` fields as-is.
+  - For the "Reach/Impressions" column, **simply show** the `reach` fields **from the asset list**, in the format: `reach`.
+  - Do not interpret, estimate, calculate, or rephrase. Just use the raw values from the `reach`  field as-is.
 
-- Slot Understanding:
-  - Quantity refers to **how many units** of an asset are being purchased.
-  - Slots refer to **how many times** these units will be **used or made visible per month**, based on the asset's `rate` and any `conditional limits`.
-  - Use the following default multipliers to determine slots:
+- Understanding Quantity vs Slots:
+  - `Quantity` refers to the **number of physical or available units** of the asset. For example, if there are 4 elevators in a building, the quantity is 4.
+  - `Slots` refer to **how many times those units can be used in a month**, based on the rate (frequency).
+  - Calculate slots using these rules:
 
-      - `Day` or `Once` → Quantity × 30
-      - `Week` → Quantity × 4
-      - `Month` or `Quarter` → Quantity (no multiplier)
-
-  - If a **conditional limit** is specified, override the default using:
-
-      - "X times/week" → Quantity × X × 4
-      - "X times/month" → Quantity × X
+      - If Rate is **"Day"** or **"Once"** → Slots = Quantity × 30
+      - If Rate is **"Week"** → Slots = Quantity × 4
+      - If Rate is **"Month"** or **"Quarter"** → Slots = Quantity × 1
 
   - Example:
-      - If Quantity = 3, Rate = Day, and Limit = 3 times/week → Slots = 3 × 3 × 4 = 36 slots
-      - If Quantity = 2, Rate = Week, and Limit = 2 times/month → Slots = 2 × 2 = 4 slots
+      - Quantity = 4, Rate = Day → Slots = 4 × 30 = 120
+      - Quantity = 2, Rate = Week → Slots = 2 × 4 = 8
+      - Quantity = 3, Rate = Month → Slots = 3
 
-  - Use slot understanding to help inform your recommendations, especially when comparing how frequently different assets will appear during the campaign.
+  - Use the **slot calculation** to compare how frequently each asset can appear within a month, and to optimize allocation.
 
-  
+  Important:
+- When creating the allocation table:
+  - Always calculate the **maximum available slots** for each asset using:  
+    - Day/Once → quantity × 30 × duration (in months)  
+    - Week → quantity × 4 × duration  
+    - Month/Quarter → quantity × 1 × duration  
+  - Use this value to inform how many slots are realistically purchasable within the given budget.
+
+- Try to use the **entire budget** efficiently.
+  - Distribute allocation across the top 3 selected assets, aiming for cost-effectiveness and coverage.
+  - If budget allows, consider increasing the number of slots allocated while not exceeding the maximum available slots.
+
+- The `Slots Purchased` must not exceed the calculated maximum slots available for each asset (based on quantity, frequency, and duration).
 
 
 Return in this format:
@@ -95,15 +103,18 @@ Return in this format:
 Recomended Asset [Rank]: [Asset Name]  
 Asset Type: [asset_type]  
 Rate: [₹x/frequency]  
-Reach: [reach]
+Reach: [reach]  
 Why: [3–4 sentence explanation]
 
 Then, generate a **detailed asset allocation table** based on the selected assets and budget:
-  
-| Asset        | Cost per Unit | Allocation | Quantity Purchased | Duration Covered | Reach/Impressions        | Slots (per month) |
-|--------------|----------------|-------------|---------------------|--------------------|---------------------------|-------------------|
-| asset name   | ₹x/frequency       | ₹xxxxx     | x units            | ~x months          | reach/frequency     | calculated slots  |
-| ...          | ...           | ...         | ...                 | ...                | ...                       | ...               |
-| Total Spent  |                | ₹xxxxxx    |                     |                    |                           |                   |
+
+| Asset        | Cost per Unit | Allocation | Slots Purchased | Duration Covered | Reach/Impressions  |
+|--------------|----------------|-------------|---------------------|--------------------|---------------------------|
+| asset name   | ₹x/frequency   | ₹xxxxx      | x slots             | ~x months          | reach                     |
+| ...          | ...            | ...         | ...                 | ...                | ...                       |
+| Total Spent  |                | ₹xxxxxx     |                     |                    |                           |
 """
     return prompt
+
+# Quantity-> how many elevators in a society
+# Slots -> quantity * (Freq multiplier for a month)

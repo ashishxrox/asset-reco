@@ -106,13 +106,15 @@ Rate: [₹x/frequency]
 Reach: [reach]  
 Why: [3–4 sentence explanation]
 
-Then, generate a **detailed asset allocation table** based on the selected assets and budget:
+Then, generate a **detailed asset allocation table** based on the selected assets and budget (DO NOT PUT THE TITLE JUST THE TABLE ):
 
 | Asset        | Cost per Unit | Allocation | Slots Purchased | Duration Covered | Reach/Impressions  |
 |--------------|----------------|-------------|---------------------|--------------------|---------------------------|
 | asset name   | ₹x/frequency   | ₹xxxxx      | x slots             | ~x months          | reach                     |
 | ...          | ...            | ...         | ...                 | ...                | ...                       |
 | Total Spent  |                | ₹xxxxxx     |                     |                    |                           |
+
+Make sure that the table is the last thing you put in the Response
 """
     return prompt
 

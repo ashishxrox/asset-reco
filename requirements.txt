@@ -1,4 +1,6 @@
 flask
+flask-cors
+flask-session
 openai
 python-dotenv
 requests
@@ -6,3 +8,4 @@ tqdm
 markdown
 streamlit  
 langchain
+uuid

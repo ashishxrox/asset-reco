@@ -94,6 +94,8 @@ Instructions:
 - Try to use the **entire budget** efficiently.
   - Distribute allocation across the top 3 selected assets, aiming for cost-effectiveness and coverage.
   - If budget allows, consider increasing the number of slots allocated while not exceeding the maximum available slots.
+-Make sure based on the requirement, prioritise using the full budget, and incase that's not possible you make sure the duration is satisfied. Under any circumstance atleast one of the two should be fully utilised, and in best case both should be fully utilized.
+-Incase you need to use more than 3 assets to fully use the budget for the given duration, you can use another asset but from the given asset list only. Give proper reasoning for your action.
 
 - The `Slots Purchased` must not exceed the calculated maximum slots available for each asset (based on quantity, frequency, and duration).
 
@@ -108,11 +110,11 @@ Why: [3–4 sentence explanation]
 
 Then, generate a **detailed asset allocation table** based on the selected assets and budget (DO NOT PUT THE TITLE JUST THE TABLE ):
 
-| Asset        | Cost per Unit | Allocation | Slots Purchased | Duration Covered | Reach/Impressions  |
-|--------------|----------------|-------------|---------------------|--------------------|---------------------------|
-| asset name   | ₹x/frequency   | ₹xxxxx      | x slots             | ~x months          | reach                     |
-| ...          | ...            | ...         | ...                 | ...                | ...                       |
-| Total Spent  |                | ₹xxxxxx     |                     |                    |                           |
+| Asset        | Cost per Unit | Allocation | Slots Purchased | Duration Covered | Reach/Impressions  | Quantity | Frequency |
+|--------------|----------------|-------------|---------------------|--------------------|---------------|-------------|---------|
+| asset name   | ₹x/frequency   | ₹xxxxx      | x slots             | ~x months          | reach         | quantity    | frequency |
+| ...          | ...            | ...         | ...                 | ...                | ...           |             |           |
+| Total Spent  |                | ₹xxxxxx     |                     |                    |               |             |           |
 
 Make sure that the table is the last thing you put in the Response
 """
